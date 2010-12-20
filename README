@@ -1,12 +1,26 @@
-Requirements:
-Installation of Rails 3 environment. This can be done by:
-sudo apt-get install rails
-sudo apt-get install gems
-gem install rails
+Install the following packages
+
+sudo apt-get install gem
+sudo gem update --system
+sudo gem update
+sudo gem install bundler
+sudo apt-get install libxml2-dev
+sudo apt-get install libxslt-dev
+sudo apt-get install libsqlite3-dev 
+sudo apt-get install cucumber
+ 
+
+
+** Ubuntu issues when sudo gem update --system:
+Perform the following step:
+sudo gem install rubygems-update
+cd /var/lib/gems/1.8/bin
+sudo ./update_rubygems
+
 
 Installation of ccenv:
-Download this environment into the directory in which you like it
-git clone git@github.com:wassinki/ccenv.git
+Download this environment into the directory you like
+git clone git://github.com/wassinki/ccenv.git
 
 Now do:
 cd ccenv
@@ -21,23 +35,12 @@ ccenv [-p env] [-t tag] [-n name] [NO_EXTERNAL_SERVER=true] <feature directories
 -p: environment [selenium, mechanize(default)]
 -t: tags
 -n: feature names
-
+https://github.com/wassinki/ccenv
 Additionally, you can use all cucumber options
 
 
-
-
-
-
-This environment is created using the following commands:
-
-rails new ccenv
-cd ccenv
-rails plugin install git@github.com:wassinki/cucumber_environment.git
-
-rails g cucumber_environment cucumber
-bundle install
-
-echo "Test the ccenv with the command ruby ./script/ccenv vendor/plugins/cucumber_environment/test/features/"
-ruby ./script/ccenv vendor/plugins/cucumber_environment/test/features/
+Now you should be able to run the command
+./script/ccenv vendor/plugins/cucumber_environment/test/features/
+and
+./script/ccenv vendor/plugins/cucumber_environment/test/features/ -p selenium
 
