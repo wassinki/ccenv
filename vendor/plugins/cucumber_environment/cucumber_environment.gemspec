@@ -19,9 +19,10 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency("cucumber")
-  s.add_dependency("cucumber-rails") 
+  s.add_dependency("cucumber", ">=0.8.5")
+  s.add_dependency("cucumber-rails", ">=0.3.2") 
   s.add_dependency("webrat")
+  s.add_dependency("zip")
   s.add_dependency("ruby-breakpoint") 
   s.add_dependency("mechanize")
   s.add_dependency("selenium")

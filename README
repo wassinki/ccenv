@@ -9,7 +9,7 @@ sudo apt-get install libxslt-dev
 sudo apt-get install libsqlite3-dev 
 sudo apt-get install cucumber
 
-** Ubuntu issues when sudo gem update --system:
+** Ubuntu issues when sudo gem update --system: **
 Perform the following step:
 sudo gem install rubygems-update
 cd /var/lib/gems/1.8/bin
