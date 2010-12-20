@@ -8,8 +8,6 @@ sudo apt-get install libxml2-dev
 sudo apt-get install libxslt-dev
 sudo apt-get install libsqlite3-dev 
 sudo apt-get install cucumber
- 
-
 
 ** Ubuntu issues when sudo gem update --system:
 Perform the following step:
@@ -26,6 +24,8 @@ Now do:
 cd ccenv
 bundle install
 
+Finally, put ccenv in your environment in your ~.profile
+export CUCUMBER_ENV_HOME="/my/path/to/ccenv"
 
 Now the environment should work. Optionally you can do 
 ln script/ccenv ~/bin/ccenv
