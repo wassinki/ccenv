@@ -1,0 +1,118 @@
+CucumberEnvironment
+===================
+
+This plugin automatically generates a cucumber environment for your rails application.
+Additionally, it adds a features directory to your test directory.
+ 
+The features directory
+contains a support directory in which you may create initializer ruby files (.rb files) and
+in which you may specify your paths (in the paths.rb file). These files are loaded automatically
+at startup.
+
+The feature directory contains a step_defintions directory, in which you may specify your
+own step definitions (also .rb files). The files that are locates in the root of the step_definitions directory
+are loaded for every environment. Files can be placed in the sub directories (now mechanize and selenium) to define
+environment specific step definitions. There is a set of basic step definitions in the plugin directory in lib/cucumber_environment
+These are loaded automatically.
+
+One can define features in the feature directory (general features) or environment specific features in one of the sub directories.
+
+Installation
+=======
+
+Download the plugin with
+rails plugin install git::<location>
+
+Then initialize the plugin with
+rails generate cucumber_environment cucumber
+
+Now you are ready to define features and step definitions.
+
+Run
+=======
+
+To run features, in the default environment (mechanize)
+*	cucumber
+
+To run features for a specific environment
+* cucumber -p selenium
+
+To run features in a directory different than the default (test/features)
+* cucumber my_feature_dir
+* cucumber -p selenium my_feature_dir
+
+
+One can also use the script/ccenv file
+
+External server
+======
+One can implement its own external server by defining the Webrat::Selenium::ApplicationServers::External class
+
+The server can be any command, as long as the start and end command are implemented correctly. The server
+will be loaded automatically in both selenium mode and webrat/mechanize mode, before the first scenario. To
+enable the external server, the application_framework needs to be set to :external in your environment configuration,
+in the environments dir of your feature directory. 
+
+For example:
+
+File: my_features/environments/mechanize.rb
+Webrat.configure do |config|
+  config.application_address = "localhost"
+  config.application_framework = :external
+  
+  puts config.application_framework
+  config.application_port = 8080
+end
+
+File: my_features/environments/selenum.rb
+Webrat.configure do |config|  
+  config.mode = :selenium
+  config.application_framework = :external
+  config.application_address = "localhost"
+  config.application_port = 8080
+  
+  config.open_error_files = false # Set to true if you want error pages to pop up in the browser
+end
+
+The class implementing the external server should be placed in the support dir of the features dir
+
+This class should implement the following methods:
+initialize => constructor 
+start => starts the server
+stop => stops the server
+fail => in case the server fails
+
+For example
+
+File: my_featuers/support/my_external_server
+
+require 'rubygems'
+require 'webrat/selenium/application_servers/external'
+require 'fileutils'
+require 'net/http'
+
+# The external server implementation to start the external environment automatically
+module Webrat
+  module Selenium
+    module ApplicationServers
+      class External
+        def initialize
+          super
+          // do your initialize heere
+        end     
+                        
+        def start_command
+          "command for starting the server"
+        end
+      end
+    end
+  end
+end
+      
+      
+
+
+
+
+
+Copyright (c) 2010 Ingo Wassink - Nedap N.V., released under the MIT license

@@ -1,0 +1,3 @@
+group :<%= environment %> do
+	gem 'cucumber_environment', :path=>'vendor/plugins/cucumber_environment'
+end 

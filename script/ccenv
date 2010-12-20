@@ -1,0 +1,42 @@
+#!/usr/bin/ruby
+
+cucumber_home = ENV['CUCUMBER_ENV_HOME'] || File.expand_path(File.dirname(__FILE__), "..")
+
+file_args = %w(-o --out -a --autoformat)
+args_with_options = %w(-r --require --i18n -f --format -t --tags -n --name -e --exclude -p --profile)
+
+# expand arguments
+path_given = false
+if File.exists?(File.join(cucumber_home, "vendor", "plugins", "cucumber_environment"))
+  args = []
+  until ARGV.empty?
+  	arg = ARGV.shift
+  	if arg.start_with? '-'
+      if file_args.include? arg
+      	args << arg
+      	file = ARGV.shift      	
+      	args << File.expand_path(file)      	
+      elsif args_with_options.include? arg
+      	args << arg
+      	args << ARGV.shift
+      else
+      	args << arg       
+      end
+  	elsif arg.match /.+=.+/
+  	  args << arg
+  	else
+  	  path_given = true
+  	  args << ((File.exists? arg) ? File.expand_path(arg) : arg)  	  
+  	end
+  end
+  
+  # add current directory  
+  args << Dir.pwd unless path_given 	
+  	
+ 	
+  system "cd #{cucumber_home}; cucumber #{args.join(' ')}"
+else
+  puts "You need to spec the 'CUCUMBER_ENV_HOME' variable!"
+end
+  
+  

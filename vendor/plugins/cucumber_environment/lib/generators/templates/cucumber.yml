@@ -1,0 +1,8 @@
+<% cucumber_environments.each_pair do |name, cucumber_env| -%>
+<%= name %>: <%= 
+  ["environments/#{cucumber_env}.rb", "support", "step_definitions/#{cucumber_env}"].map{|dir| 
+    "-r #{plugin_dir}/lib/cucumber_environment/#{dir}"}.join(" ") 
+  %> <%=
+    step_definitions.map {|file| "-r #{file}" }.join(" ") 
+  %>
+<% end %>
