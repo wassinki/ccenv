@@ -2,13 +2,14 @@ PATH
   remote: vendor/plugins/cucumber_environment
   specs:
     cucumber_environment (0.0.1)
-      cucumber
-      cucumber-rails
+      cucumber (>= 0.8.5)
+      cucumber-rails (>= 0.3.2)
       mechanize
       ruby-breakpoint
       selenium
       selenium-client
       webrat
+      zip
 
 GEM
   remote: http://rubygems.org/
@@ -106,6 +107,7 @@ GEM
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
+    zip (2.0.2)
 
 PLATFORMS
   ruby

@@ -15,13 +15,17 @@ module Webrat
         
         # starts the server
         def start
+          # Hack, because when selenium starts the server manager does not know about this instance        
+          Webrat::Selenium::ApplicationServerManager.instance.server ||= self
+          
           external_command = start_command          
           return if external_command.nil?
           
           puts "Starting external server"
                   
           # Don't start server if this parameter is given
-          return false if ENV["NO_EXTERNAL_SERVER"] == "true"
+          return if ENV["NO_EXTERNAL_SERVER"] == "true"
+          
           
           # start the server
           @pid = fork do            
@@ -43,7 +47,8 @@ module Webrat
             exit
           end   
           
-          return true       
+          # Hack, because when selenium starts the server manager does not know about this instance
+          Webrat::Selenium::ApplicationServerManager.instance.server_started = true
         end
         
         # stops the server
@@ -58,7 +63,7 @@ module Webrat
         
         # fails
         def fail          
-          $stderr.puts "\n\n==> Failed to boot the external application server... exiting!\n\n"
+          puts "\n\n==> Failed to boot the external application server... exiting!\n\n"
           exit
         end
         

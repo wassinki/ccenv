@@ -16,20 +16,20 @@ end
 module Webrat
   module Selenium
     class ApplicationServerManager  
-      attr_reader :server
-      attr_reader :server_started
+      attr_accessor :server
+      attr_accessor :server_started
 
       
       # stops the server
       def start_server
         unless @server_started    
-          @server_started = @server.start
+          @server_started = @server.start          
         end
       end
       
       # starts the server
       def stop_server
-        unless @server.nil?
+        unless @server.nil? || !@server_started
           @server.stop
           @server_started = false
         end

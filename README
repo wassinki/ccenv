@@ -7,7 +7,7 @@ sudo gem install bundler
 sudo apt-get install libxml2-dev
 sudo apt-get install libxslt-dev
 sudo apt-get install libsqlite3-dev 
-sudo apt-get install cucumber
+sudo gem install cucumber
 
 ** Ubuntu issues when sudo gem update --system: **
 Perform the following step:
