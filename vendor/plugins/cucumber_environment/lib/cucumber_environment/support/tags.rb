@@ -5,7 +5,7 @@ class Tags
     
     # method missing to perform the tag check on a tag
     def method_missing(sym, *args, &block)      
-      return @tag_expression.nil? ? false : @tag_expression.eval("@#{sym.to_s}")      
+      return false # @tag_expression.nil? ? false : @tag_expression.eval("@#{sym.to_s}")      
     end
   end
 end
