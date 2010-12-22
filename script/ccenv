@@ -34,7 +34,7 @@ if File.exists?(File.join(cucumber_home, "vendor", "plugins", "cucumber_environm
   args << Dir.pwd unless path_given 	
   	
  	
-  system "cd #{cucumber_home}; cucumber #{args.join(' ')}"
+  system "cd #{cucumber_home}; bundle exec cucumber #{args.join(' ')}"
 else
   puts "You need to spec the 'CUCUMBER_ENV_HOME' variable!"
 end
