@@ -5,11 +5,11 @@ PATH
       cucumber (= 0.9.4)
       cucumber-rails (= 0.3.2)
       mechanize (= 1.0.0)
-      ruby-breakpoint
+      ruby-breakpoint (= 0.5.1)
       selenium (= 0.0.3)
       selenium-client (= 1.2.18)
       webrat (= 0.7.3)
-      zip
+      zip (= 2.0.2)
 
 GEM
   remote: http://rubygems.org/

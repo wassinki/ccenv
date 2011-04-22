@@ -1,19 +1,27 @@
 Install the following packages
 
+sudo apt-get install ruby
+sudo apt-get install irb
+sudo apt-get install ruby1.8-dev
+
+# if not ubuntu:
 sudo apt-get install gem
 sudo gem update --system
-sudo gem update
-sudo gem install bundler
+# else
+sudo apt-get install rubygem
+sudo gem install rubygems-update
+sudo /var/lib/gems/1.8/bin//update_rubygems
+
+sudo apt-get install git-core
 sudo apt-get install libxml2-dev
 sudo apt-get install libxslt-dev
 sudo apt-get install libsqlite3-dev 
+sudo apt-get install libopenssl-ruby
 sudo gem install cucumber
 
-** Ubuntu issues when sudo gem update --system: **
-Perform the following step:
-sudo gem install rubygems-update
-cd /var/lib/gems/1.8/bin
-sudo ./update_rubygems
+sudo gem install bundler
+
+
 
 
 Installation of ccenv:
