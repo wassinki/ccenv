@@ -98,8 +98,6 @@ AfterConfiguration do |config|
           locator = label_text.starts_with?("xpath=") ? field_identifier : "webrat=#{Regexp.escape(field_identifier)}"
           selenium.key_up(locator, key_code)
         end  
-        
-        # performs an xpath evaluation
       end
     end
     
