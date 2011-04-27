@@ -2,13 +2,6 @@ require 'base64'
       
 button_regexp = lambda {|button| "//a[contains(@class,'button')]//*[contains(text(), '#{button}')]"}
 
-Given /^I am logged in with username "([^"]*)" and password "([^"]*)"$/ do |username, password|
-  Given %{I am on the login page}  
-  When %{I select "#{username}" from "Username"}
-  And %{I fill in "#{password}" for "Password"}       
-  And %{I follow "Login"}
-end
-
 
 Then /^(?:I )will (not )?\s*confirm for$/ do |dont_confirm|
   unless dont_confirm    
