@@ -34,9 +34,9 @@ module Webrat
           
           # wait until connection is available
           request = Net::HTTP::Get.new("/")
-          tries = 10             
+          tries = 50             
           begin            
-            sleep(5)
+            sleep(1)
             response = Net::HTTP.start(Webrat.configuration.application_address, Webrat.configuration.application_port){|http| http.request(request)}
             raise Exception.new(response.error) unless [Net::HTTPSuccess, Net::HTTPRedirection].any?{|klazz| response.is_a? klazz}
           rescue Exception => e
