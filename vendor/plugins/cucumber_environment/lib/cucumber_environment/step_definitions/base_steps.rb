@@ -181,11 +181,11 @@ Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
 end
 
 Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
-  assert field_labeled(label).checked?
+  assert field_with_name(label).checked?
 end
 
 Then /^the "([^\"]*)" checkbox should not be checked$/ do |label|
-  assert !field_labeled(label).checked?
+  assert !field_with_name(label).checked?
 end
 
 Then /^I should( not)? be on (.+)$/ do |negate, page_name|  
@@ -201,7 +201,7 @@ Then /^show me the page$/ do
 end
 
 def field_with_name(field_name)
-  input_field_with_name(field_name) || select_with_name(field_name)
+  result = input_field_with_name(field_name) || select_with_name(field_name)
 end
 
 # tries to find the field with given name, using the type selector

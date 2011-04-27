@@ -3,6 +3,33 @@ AfterConfiguration do |config|
     module Webrat
       class SeleniumSession
         DEFAULT_TIMEOUT = 30
+
+        # try to find field by name
+        def field_labeled(field_name)
+          v = selenium.get_value field_with_name(field_name)
+          def v.value
+            self
+          end         
+          v
+        end
+        
+        # search for input with field name
+        def field_with_name(field_name)
+          result = input_field_with_name(field_name) || select_with_name(field_name)
+        end
+
+        # tries to find the field with given name, using the type selector
+        # if no type is given, all input fields are looked for
+        def input_field_with_name(field_name, type=nil)
+          types = type.nil? ? %w(text password file checkbox radio) : type.to_a
+          type_selector = types.map{|f| "@type='#{f}'"}.join(" or ")
+          field_by_xpath("//p[./label[starts-with(text(), '#{field_name}')]]//input[#{type_selector}]" )
+        end
+
+        # tries to find the select with the given name
+        def select_with_name(field_name)
+          field_by_xpath("//p[./label[starts-with(text(), '#{field_name}')]]//select" )
+        end
               
         # Method to wait for the elemens
         def wait_for_load(hints = {})
