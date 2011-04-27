@@ -36,11 +36,22 @@ Then /^(?:I )see the confirm dialog( with text "([^\"]*)"?)?$/ do |with_text, te
   #assert_false selenium.confirmation?       
 end
 
+Then /^(?:I )see the confirm dialog( with text "([^\"]*)"?)?$/ do |with_text, text|  
+  #assert selenium.confirmation?
+  #if with_text
+  #  assert_equal(text, selenium.confirmation)
+  #else
+  #  selenium.confirmation
+  #end
+  #assert_false selenium.confirmation?       
+end
+
 Then /^(?:I )should (not )?\s*see an alert dialog(?: with text "([^\"]*)")?$/ do |negate, text|
-  unless negate    
-    assert_equal(text, selenium.alert) unless text.blank?    
-  else
-    assert_false(selenium.alert?)
-  end
+  selenium.alert
+  #unless negate    
+  #  assert_equal(text, selenium.alert) unless text.blank?    
+  #else
+  #  assert_false(selenium.alert?)
+  #end
 end
 

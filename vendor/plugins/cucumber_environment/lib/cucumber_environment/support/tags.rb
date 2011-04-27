@@ -4,7 +4,7 @@ class Tags
     attr_accessor :tag_expression
     
     # method missing to perform the tag check on a tag
-    def method_missing(sym, *args, &block)      
+    def method_missing(sym, *args, &block)    
       return @tag_expression.nil? ? false : @tag_expression.eval("@#{sym.to_s}")      
     end
   end
