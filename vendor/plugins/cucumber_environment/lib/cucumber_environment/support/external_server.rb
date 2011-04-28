@@ -11,12 +11,18 @@ module Webrat
         attr_reader :project_root
         attr_reader :vpu_dir
         attr_reader :data_dir        
-       
+        
+        attr_reader :started
+        
+        # to check whether server is started
+        def started?
+          @started
+        end
         
         # starts the server
         def start
           # Hack, because when selenium starts the server manager does not know about this instance        
-          Webrat::Selenium::ApplicationServerManager.instance.server ||= self
+          Webrat::Selenium::ApplicationServerManager.instance.server = self
           
           external_command = start_command          
           return if external_command.nil?
@@ -31,6 +37,7 @@ module Webrat
           @pid = fork do            
             exec(external_command)            
           end
+          @started = true
           
           # wait until connection is available
           request = Net::HTTP::Get.new("/")
@@ -45,19 +52,23 @@ module Webrat
             
             STDERR.puts "Cannot start server: #{e.message}"
             exit
-          end   
-          
-          # Hack, because when selenium starts the server manager does not know about this instance
-          Webrat::Selenium::ApplicationServerManager.instance.server_started = true
+          end
         end
         
         # stops the server
         def stop
           unless @pid.nil?
-            silence_stream(STDOUT) do            
-              Process.kill('KILL', @pid)
-              Process.waitpid(@pid)
+            begin
+              # check if process id exists
+              Process::getpgid(@pid)
+              
+              silence_stream(STDOUT) do            
+                Process.kill('KILL', @pid)
+                Process.waitpid(@pid)
+              end
+            rescue Errno::ESRCH
             end
+            @started = false
           end
         end
         

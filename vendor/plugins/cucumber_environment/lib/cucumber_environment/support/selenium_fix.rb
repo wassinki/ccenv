@@ -17,14 +17,15 @@ AfterConfiguration do |config|
         
         # fix for confirm dialog
         def choose_on_next_confirmation(value)
+           #document.body.innerHTML += "<div id='selenium_confirm_box' style='background-color: gray; display:none'>" + arguments[0] + "<br/>" + 
+           #   "<button>Cancel #{value}</button>" + "<button>OK</button></div>";
           script = <<-END_OF_SCRIPT
             window.confirm = function() {
-              document.body.innerHTML += "<div id='selenium_confirm_box' style='background-color: gray; display:none'>" + arguments[0] + "<br/>" + 
-              "<button>Cancel #{value}</button>" + "<button>OK</button></div>";
-               
               return #{value};
             };
             END_OF_SCRIPT
+
+
             
           run_script(script)          
         end
@@ -36,12 +37,15 @@ AfterConfiguration do |config|
       
         # fix for alert dialog
         def alert
+          #  document.body.innerHTML += "<div id='selenium_alert_box' style='background-color: gray; display:none'>" + arguments[0] + "<br/>" + 
+          #    "<button>OK</button></div>";
+        
           script = <<-END_OF_SCRIPT
-            window.alert = function() {
-              document.body.innerHTML += "<div id='selenium_alert_box' style='background-color: gray; display:none'>" + arguments[0] + "<br/>" + 
-              "<button>OK</button></div>";
+            window.alert = function() {              
             };
             END_OF_SCRIPT
+            
+           
             
           run_script(script)        
         end

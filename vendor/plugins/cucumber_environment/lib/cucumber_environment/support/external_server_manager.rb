@@ -1,7 +1,7 @@
 # Before filter to start the server in mechanize environment automatically
 Before do
   # only start if server hasn't started yet or mode is selenium (becuase this will automatically start the server)
-  unless Webrat::Selenium::ApplicationServerManager.instance.server_started || Webrat.configuration.mode == :selenium  
+  unless Webrat::Selenium::ApplicationServerManager.instance.server_started? || Webrat.configuration.mode == :selenium  
     Webrat::Selenium::ApplicationServerManager.instance.start_server if Webrat.configuration.application_framework == :external
   end
 end
@@ -17,21 +17,24 @@ module Webrat
   module Selenium
     class ApplicationServerManager  
       attr_accessor :server
-      attr_accessor :server_started
+      
+      # method to check whether the server is started
+      def server_started?
+        @server.nil? ? false : @server.started?
+      end
 
       
       # stops the server
       def start_server
-        unless @server_started    
-          @server_started = @server.start          
+        unless server_started?   
+          @server.start          
         end
       end
       
       # starts the server
       def stop_server
-        unless @server.nil? || !@server_started
+        if server_started?
           @server.stop
-          @server_started = false
         end
       end
    
@@ -48,11 +51,11 @@ module Webrat
       end
       
       private
-            
+      
       def initialize
         @server = Webrat::Selenium::ApplicationServers::External.new
-        @server_started = false
       end
+      
     end
   end
 end
