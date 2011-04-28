@@ -7,6 +7,8 @@ module SeleniumSessionHelpers
        selenium.wait_for_page(30)
       elsif hints[:link]
         sleep(2)
+      else
+        sleep(2)
       end
     rescue Exception => e          
       raise e unless e.message.match /timed\s*out/          
