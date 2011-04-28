@@ -3,6 +3,8 @@ require 'webrat/selenium'
 require 'webrat/selenium/selenium_session'
 require 'webrat/selenium/application_servers/rails'
 
+require File.expand_path(File.join(File.dirname(__FILE__), '../support/selenium_session_helpers.rb'))
+
 Webrat.configure do |config|
   config.mode = :selenium  
   config.application_environment = :cucumber
@@ -13,7 +15,7 @@ Webrat.configure do |config|
   selenium_browser_key = ENV['selenium.browser_key'] || "*firefox"
   selenium_browser_startup_timeout = 3000
   selenium_server_address = ENV['selenium.server_address'] || "http://localhost"
-  selenium_server_port = ENV['selenium.server_port'] || 6666
+  selenium_server_port = ENV['selenium.server_port'] || 4444
 end
 
 # Selenium server
@@ -51,4 +53,6 @@ end
 # this is necessary to have webrat "wait_for" the response body to be available
 # when writing steps that match against the response body returned by selenium
 World(Webrat::Selenium::Matchers)
+World(SeleniumSessionHelpers)
+
 

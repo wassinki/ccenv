@@ -72,3 +72,9 @@ REQUESTING PAGE: GET /vscan/OverviewPage.web with {} and HTTP headers {"HTTP_REF
 REQUESTING PAGE: GET http://localhost:4080/login/LoginPage.web?action=2 with {} and HTTP headers {"HTTP_REFERER"=>"/vscan/OverviewPage.web"}
 REQUESTING PAGE: GET http://localhost:4080/ with {} and HTTP headers {}
 REQUESTING PAGE: GET http://localhost:4080/login/LoginPage.web?action=2 with {} and HTTP headers {"HTTP_REFERER"=>"http://localhost:4080/"}
+REQUESTING PAGE: GET http://localhost:4080/login/LoginPage.web with {} and HTTP headers {}
+REQUESTING PAGE: GET http://localhost:4080/login/LoginPage.web/ with {} and HTTP headers {"HTTP_REFERER"=>"http://localhost:4080/login/LoginPage.web"}
+REQUESTING PAGE: GET http://localhost:4080/login/LoginPage.web with {} and HTTP headers {}
+REQUESTING PAGE: GET http://localhost:4080/login/LoginPage.web/ with {} and HTTP headers {"HTTP_REFERER"=>"http://localhost:4080/login/LoginPage.web"}
+REQUESTING PAGE: GET http://localhost:4080/login/LoginPage.web with {} and HTTP headers {}
+REQUESTING PAGE: GET http://localhost:4080/login/LoginPage.web/ with {} and HTTP headers {"HTTP_REFERER"=>"http://localhost:4080/login/LoginPage.web"}
