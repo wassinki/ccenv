@@ -1,6 +1,6 @@
 Install the following packages
 
-sudo apt-get install ruby irb ruby1.8-dev git-core libxml2-dev libxslt-dev libsqlite3-dev  libopenssl-ruby
+sudo apt-get install ruby irb ruby1.8-dev git-core libxml2-dev libxslt-dev libsqlite3-dev  libopenssl-ruby rake
 
 # if not ubuntu:
 sudo apt-get install gems
