@@ -1,24 +1,17 @@
 Install the following packages
 
-sudo apt-get install ruby
-sudo apt-get install irb
-sudo apt-get install ruby1.8-dev
+sudo apt-get install ruby irb ruby1.8-dev git-core libxml2-dev libxslt-dev libsqlite3-dev  libopenssl-ruby
 
 # if not ubuntu:
-sudo apt-get install gem
+sudo apt-get install gems
 sudo gem update --system
 # else
-sudo apt-get install rubygem
+sudo apt-get install rubygems
 sudo gem install rubygems-update
 sudo /var/lib/gems/1.8/bin//update_rubygems
+# end
 
-sudo apt-get install git-core
-sudo apt-get install libxml2-dev
-sudo apt-get install libxslt-dev
-sudo apt-get install libsqlite3-dev 
-sudo apt-get install libopenssl-ruby
 sudo gem install cucumber
-
 sudo gem install bundler
 
 

@@ -5,9 +5,11 @@ PATH
       cucumber (= 0.9.4)
       cucumber-rails (= 0.3.2)
       mechanize (= 1.0.0)
+      mysql
       ruby-breakpoint (= 0.5.1)
       selenium (= 0.0.3)
       selenium-client (= 1.2.18)
+      sqlite3
       webrat (= 0.7.3)
       zip (= 2.0.2)
 
@@ -72,6 +74,7 @@ GEM
     mechanize (1.0.0)
       nokogiri (>= 1.2.1)
     mime-types (1.16)
+    mysql (2.8.1)
     nokogiri (1.4.4)
     polyglot (0.3.1)
     rack (1.2.2)
