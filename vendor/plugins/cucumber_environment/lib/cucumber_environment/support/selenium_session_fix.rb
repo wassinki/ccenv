@@ -32,6 +32,10 @@ AfterConfiguration do |config|
         def select_with_name(field_name)
           field_by_xpath("//p[./label[starts-with(text(), '#{field_name}')]]//select" )
         end
+        
+        def select(value, options)
+          selenium.select(options[:from] || options[:with], value)
+        end
               
 
         
