@@ -1,11 +1,16 @@
 PATH
+  remote: /home/wassinki/workspace/nedap_i_and_r/LiveID1.0/test/features
+  specs:
+    live_id (1)
+      mysql
+
+PATH
   remote: vendor/plugins/cucumber_environment
   specs:
     cucumber_environment (0.0.1)
       cucumber (= 0.9.4)
       cucumber-rails (= 0.3.2)
       mechanize (= 1.0.0)
-      mysql
       ruby-breakpoint (= 0.5.1)
       selenium (= 0.0.3)
       selenium-client (= 1.2.18)
@@ -119,5 +124,6 @@ PLATFORMS
 
 DEPENDENCIES
   cucumber_environment!
+  live_id!
   rails (= 3.0.3)
   sqlite3-ruby

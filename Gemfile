@@ -30,3 +30,11 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 #   gem 'webrat'
 # end
 gem "cucumber_environment", :group => :cucumber, :path => "vendor/plugins/cucumber_environment"
+
+ARGV.each do |arg|
+  if File.directory? arg
+    Dir[File.join(arg, "*.gemspec")].each do |gemspec|
+      gem File.basename(gemspec).chomp(File.extname(gemspec)), :group => :cucumber, :path => File.dirname(gemspec)
+    end
+  end    
+end

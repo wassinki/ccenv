@@ -27,6 +27,4 @@ Gem::Specification.new do |s|
   s.add_dependency("mechanize", "=1.0.0")
   s.add_dependency("selenium", "=0.0.3")
   s.add_dependency("selenium-client", "=1.2.18")
-  s.add_dependency("mysql")  
-  s.add_dependency("sqlite3")  
 end
