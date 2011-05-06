@@ -25,7 +25,6 @@ When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
   When %{I fill in "#{value}" for "#{field}"}
 end
 
-
 When /^I fill in "([^\"]*)" for "([^\"]*)"$/ do |value, field|
   fill_in(input_field_with_name(field), :with => value)
 end
@@ -50,8 +49,22 @@ When /^I fill in the following:$/ do |fields|
   end
 end
 
-When /^I select "([^\"]*)" from "([^\"]*)"$/ do |value, field|
+When /^I select "([^\"]*)" (?:from|for) "([^\"]*)"$/ do |value, field|
   select(value, :with => select_with_name(field))
+end
+
+Then /^the field "([^\"]*)" should\s+(not )?\s*have option(?:s)? "([^\"]*)"$/ do |field, not_have, options|
+  s = select_with_name(field)
+  s["xpath="] = ""
+
+  options.split(/,\s*/).each do |o|
+    if not_have.nil?
+      assert !field_by_xpath("#{s}/option[text() = '#{o}']").nil?    
+    else
+      assert field_by_xpath("#{s}/option[text() = '#{o}']").nil?    
+    end
+
+  end
 end
 
 # Use this step in conjunction with Rail's datetime_select helper. For example:
@@ -102,22 +115,22 @@ When /^I select "([^\"]*)" as the "([^\"]*)" date$/ do |date, date_label|
 end
 
 When /^I check "([^\"]*)"$/ do |field|
-  check(field)
+  check(input_field_with_name(field))
 end
 
 When /^I uncheck "([^\"]*)"$/ do |field|
-  uncheck(field)
+  uncheck(input_field_with_name(field))
 end
 
 When /^I choose "([^\"]*)"$/ do |field|
-  choose(field)
+  choose(input_field_with_name(field))
 end
 
 When /^I attach the file at "([^\"]*)" to "([^\"]*)"$/ do |path, field|
   attach_file(field, path)
 end
 
-Then /^I should (not )?see "([^\"]*)"$/ do |negate, text|  
+Then /^I should\s+(not )?\s*see "([^\"]*)"$/ do |negate, text|  
   if negate.nil?
     assert_contain text
   else
@@ -125,7 +138,7 @@ Then /^I should (not )?see "([^\"]*)"$/ do |negate, text|
   end    
 end
 
-Then /^I should (not )?see "([^\"]*)" within "([^\"]*)"$/ do |negate, text, selector|
+Then /^I should\s+(not )?\s*see "([^\"]*)" within "([^\"]*)"$/ do |negate, text, selector|
   within(selector) do |content|
     if negate.nil?
       assert content.include?(text)
@@ -135,7 +148,7 @@ Then /^I should (not )?see "([^\"]*)" within "([^\"]*)"$/ do |negate, text, sele
   end
 end
 
-Then /^I should (not )?see \/([^\/]*)\/$/ do |negate, regexp|
+Then /^I should\s+(not )?\s*see \/([^\/]*)\/$/ do |negate, regexp|
   regexp = Regexp.new(regexp)
   if negate.nil?
     assert_contain regexp
@@ -144,7 +157,7 @@ Then /^I should (not )?see \/([^\/]*)\/$/ do |negate, regexp|
   end
 end
 
-Then /^I should (not )?see \/([^\/]*)\/ within "([^\"]*)"$/ do |negate, regexp, selector|
+Then /^I should\s+(not )?\s*see \/([^\/]*)\/ within "([^\"]*)"$/ do |negate, regexp, selector|
   within(selector) do |content|
     regexp = Regexp.new(regexp)
     if negate.nil?
@@ -155,7 +168,7 @@ Then /^I should (not )?see \/([^\/]*)\/ within "([^\"]*)"$/ do |negate, regexp, 
   end
 end
 
-Then /^I should (not )?see (field|select|textfield|passwordfield|checkbox|radiobutton) "([^\"]*)"$/ do |negate, type, name|
+Then /^I should\s+(not )?\s*see (field|select|textfield|passwordfield|checkbox|radiobutton) "([^\"]*)"$/ do |negate, type, name|
   field = case type
     when "field"
       field_with_name(name)
@@ -180,12 +193,13 @@ Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
   assert_no_match(/#{value}/, field_labeled(field).value)
 end
 
-Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
-  assert field_with_name(label).checked?
+Then /^the "([^\"]*)" (?:checkbox|radio button) should be checked$/ do |label|
+puts field_labeled(label)
+  assert field_labeled(label).checked?
 end
 
-Then /^the "([^\"]*)" checkbox should not be checked$/ do |label|
-  assert !field_with_name(label).checked?
+Then /^the "([^\"]*)" (?:checkbox|radio button) should not be checked$/ do |label|
+  assert !field_labeled(label).checked?
 end
 
 Then /^I should( not)? be on (.+)$/ do |negate, page_name|  

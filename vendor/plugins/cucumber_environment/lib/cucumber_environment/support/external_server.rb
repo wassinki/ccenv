@@ -35,7 +35,7 @@ module Webrat
           
           # start the server
           @pid = fork do            
-            exec(external_command)            
+            exec(external_command) 
           end
           @started = true
           

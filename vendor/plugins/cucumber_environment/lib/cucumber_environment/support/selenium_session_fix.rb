@@ -12,6 +12,10 @@ AfterConfiguration do |config|
           def v.value
             self
           end         
+          def v.checked?
+            self == "on"
+          end
+          
           v
         end
         
@@ -100,7 +104,24 @@ AfterConfiguration do |config|
           selenium.click locator
         end
         
-        alias check choose
+
+        # checks the given check box        
+        def check(label_text, checked = true)
+          locator = label_text.starts_with?("xpath=") ? label_text : "webrat=#{label_text}"
+         
+          selenium.wait_for_element locator, :timeout_in_seconds => 5          
+          
+          expected_value = checked ? "on" : "off"
+          unless selenium.value(locator) == expected_value
+            selenium.key_up(locator, " ") 
+          end
+        end
+        
+        # unchecks the given text box
+        def uncheck(label_text)
+          check(label_text, false)
+        end
+
         
         # Only uses webrat identifier if identifier doesn't start with xpath
         def fire_event(field_identifier, event)
