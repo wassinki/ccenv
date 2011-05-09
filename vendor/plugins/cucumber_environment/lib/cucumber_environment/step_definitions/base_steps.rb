@@ -193,21 +193,35 @@ Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
   assert_no_match(/#{value}/, field_labeled(field).value)
 end
 
-Then /^the "([^\"]*)" (?:checkbox|radio button) should be checked$/ do |label|
-  assert field_labeled(label).checked?
-end
-
-Then /^the "([^\"]*)" field should be (enabled|disabled)$/ do |label,enabled_disabled|
-  if enabled_disabled == "enabled"
-    !assert field_labeled(label).disabled?
+Then /^the "([^\"]*)" (?:checkbox|radio button) should be (checked|unchecked)$/ do |field, checked_unchecked|
+  if checked_unchecked == "checked"
+    assert field_labeled(field).checked?
   else
-    assert field_labeled(label).disabled?  
+    assert !field_labeled(field).checked?
   end
 end
 
-Then /^the "([^\"]*)" (?:checkbox|radio button) should not be checked$/ do |label|
-  assert !field_labeled(label).checked?
+
+Then /^the "([^\"]*)" (checkbox|radio button) should not be (checked|unchecked)$/ do |field, field_type , checked_unchecked|
+  checked_unchecked = (checked_unchecked == "checked") ? "unchecked" : "checked"
+  Then %(the "#{field}" #{field_type} should be #{checked_unchecked})
 end
+
+
+
+Then /^the "([^\"]*)" field should be (enabled|disabled)$/ do |field,enabled_disabled|
+  if enabled_disabled == "enabled"
+    !assert field_labeled(field).disabled?
+  else
+    assert field_labeled(field).disabled?  
+  end
+end
+
+Then /^the "([^\"]*)" field should not be (enabled|disabled)$/ do |field,enabled_disabled|
+  enabled_disabled = (enabled_disabled == "enabled") ? "disabled" : "enabled"
+  Then %(the "#{field}" field should be #{enabled_disabled})
+end
+
 
 Then /^I should( not)? be on (.+)$/ do |negate, page_name|  
   unless negate
