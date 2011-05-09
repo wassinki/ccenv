@@ -30,7 +30,7 @@ AfterConfiguration do |config|
             end            
           end
           
-          v.enabled = selenium.editable(field)
+          v.enabled = selenium.is_editable(field)
           
           v
         end
