@@ -13,10 +13,6 @@ When /^(?:I )type "(.*)" in "(.*)"$/ do |value, field|
   end
 end
 
-When /^(?:I )select "(.+)" for "(.+)"$/ do |value, field|
-   selenium.select("//p[./label[starts-with(text(), '#{field}')]]//select", value)
-end
-
 When /^(?:I )(un)?check "(.+)"$/ do |uncheck, field|
   if uncheck.blank? && selenium.value("//p[./label[starts-with(text(), '#{field}')]]//input[@type='checkbox']") == "off"
     selenium.key_up("//p[./label[starts-with(text(), '#{field}')]]//input[@type='checkbox']", " ") 
