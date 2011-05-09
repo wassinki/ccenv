@@ -197,6 +197,14 @@ Then /^the "([^\"]*)" (?:checkbox|radio button) should be checked$/ do |label|
   assert field_labeled(label).checked?
 end
 
+Then /^the "([^\"]*)" field should be (enabled|disabled)$/ do |label,enabled_disabled|
+  if enabled_disabled == "enabled"
+    !assert field_labeled(label).disabled?
+  else
+    assert field_labeled(label).disabled?  
+  end
+end
+
 Then /^the "([^\"]*)" (?:checkbox|radio button) should not be checked$/ do |label|
   assert !field_labeled(label).checked?
 end
