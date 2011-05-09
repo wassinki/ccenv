@@ -194,7 +194,6 @@ Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
 end
 
 Then /^the "([^\"]*)" (?:checkbox|radio button) should be checked$/ do |label|
-puts field_labeled(label)
   assert field_labeled(label).checked?
 end
 

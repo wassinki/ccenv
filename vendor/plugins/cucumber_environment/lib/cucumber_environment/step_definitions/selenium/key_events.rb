@@ -13,15 +13,6 @@ When /^(?:I )type "(.*)" in "(.*)"$/ do |value, field|
   end
 end
 
-When /^(?:I )(un)?check "(.+)"$/ do |uncheck, field|
-  if uncheck.blank? && selenium.value("//p[./label[starts-with(text(), '#{field}')]]//input[@type='checkbox']") == "off"
-    selenium.key_up("//p[./label[starts-with(text(), '#{field}')]]//input[@type='checkbox']", " ") 
-  elsif selenium.value("//p[./label[starts-with(text(), '#{field}')]]//input[@type='checkbox']") == "on"
-    selenium.key_up("//p[./label[starts-with(text(), '#{field}')]]//input[@type='checkbox']", " ") 
-  end
-end
-
-
 When /^I type in the following:$/ do |fields|
   fields.rows_hash.each do |name, value|
     When %{I type "#{value}" in "#{name}"}
