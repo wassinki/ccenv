@@ -8,13 +8,29 @@ AfterConfiguration do |config|
       
         # try to find field by name
         def field_labeled(field_name)
-          v = selenium.get_value field_with_name(field_name)
-          def v.value
-            self
-          end         
-          def v.checked?
-            self == "on"
+          field = field_with_name(field_name)
+          v = selenium.get_value field
+          class << v
+              attr_accessor :enabled     
+            def value
+              self
+            end         
+            
+            def checked?
+              self == "on"
+            end
+            
+                     
+            def disabled?
+              !enabled?
+            end
+            
+            def enabled?
+              enabled
+            end            
           end
+          
+          v.enabled = selenium.editable?(field)
           
           v
         end
