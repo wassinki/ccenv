@@ -8,6 +8,8 @@ module Webrat
   module Selenium
     module ApplicationServers
       class External        
+        PID_FILE = File.join(Dir.tmpdir, "cucumber_external_server")
+        
         attr_reader :project_root
         attr_reader :vpu_dir
         attr_reader :data_dir        
@@ -16,11 +18,15 @@ module Webrat
         
         # to check whether server is started
         def started?
-          @started
+          @started          
         end
         
         # starts the server
         def start
+          # stop a running server
+          stop       
+        
+        
           # Hack, because when selenium starts the server manager does not know about this instance        
           Webrat::Selenium::ApplicationServerManager.instance.server = self
           
@@ -34,9 +40,11 @@ module Webrat
           
           
           # start the server
-          @pid = fork do            
+          pid = fork do            
             exec(external_command) 
           end
+          File.open(PID_FILE, "w"){|file| file.puts pid } unless pid.nil?
+          
           @started = true
           
           # wait until connection is available
@@ -57,18 +65,26 @@ module Webrat
         
         # stops the server
         def stop
-          unless @pid.nil?
-            begin
-              # check if process id exists
-              Process::getpgid(@pid)
-              
-              silence_stream(STDOUT) do            
-                Process.kill('KILL', @pid)
-                Process.waitpid(@pid)
+          if File.exist? PID_FILE
+            pid = nil
+            File.open(PID_FILE, "r"){|file| pid = file.gets.strip.to_i}
+  
+
+            unless pid.nil?
+              begin
+                # check if process id exists, throws an exception if not exists
+                Process::getpgid(pid)
+                
+                silence_stream(STDOUT) do            
+                  Process.kill('KILL', pid)
+                  Process.waitpid(pid)
+                end
+              rescue Errno::ESRCH
               end
-            rescue Errno::ESRCH
-            end
-            @started = false
+              @started = false
+            end            
+            File.delete(PID_FILE)
+            
           end
         end
         
