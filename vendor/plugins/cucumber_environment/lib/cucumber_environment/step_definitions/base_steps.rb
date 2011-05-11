@@ -244,11 +244,11 @@ end
 def input_field_with_name(field_name, type=nil)
   types = type.nil? ? %w(text password file checkbox radio) : type.to_a
   type_selector = types.map{|f| "@type='#{f}'"}.join(" or ")
-  field_by_xpath("//p[./label[starts-with(text(), '#{field_name}')]]//input[#{type_selector}]" )
+  field_by_xpath("//p[./label[starts-with(text(), '#{field_name}')]]//input[#{type_selector}]" ) || field_by_xpath("//input[@id='#{field_name}' and (#{type_selector})]" )
 end
 
 # tries to find the select with the given name
 def select_with_name(field_name)
-  field_by_xpath("//p[./label[starts-with(text(), '#{field_name}')]]//select" )
+  field_by_xpath("//p[./label[starts-with(text(), '#{field_name}')]]//select" )  || field_by_xpath("//select[@id='#{field_name}']" )
 end
 
