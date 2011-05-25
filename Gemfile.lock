@@ -1,8 +1,8 @@
 PATH
-  remote: /home/wassinki/workspace/velos/agri/src/test/cucumber/settings
+  remote: /home/wassinki/workspace/nedap_i_and_r/LiveID1.0/test/features
   specs:
-    velos (1)
-      sqlite3
+    live_id (1)
+      mysql
 
 PATH
   remote: vendor/plugins/cucumber_environment
@@ -78,6 +78,7 @@ GEM
     mechanize (1.0.0)
       nokogiri (>= 1.2.1)
     mime-types (1.16)
+    mysql (2.8.1)
     nokogiri (1.4.4)
     polyglot (0.3.1)
     rack (1.2.2)
@@ -122,6 +123,6 @@ PLATFORMS
 
 DEPENDENCIES
   cucumber_environment!
+  live_id!
   rails (= 3.0.3)
   sqlite3-ruby
-  velos!
