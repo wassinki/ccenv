@@ -2,6 +2,10 @@
 class Tags
   class << self
     attr_accessor :tag_expression
+
+    def tags
+      @tag_expression.nil? ? [] : @tag_expression.tags
+    end
     
     def empty?
       return @tag_expression.empty?
@@ -9,9 +13,15 @@ class Tags
     
     # method missing to perform the tag check on a tag
     def method_missing(sym, *args, &block)    
-      return @tag_expression.nil? ? false : @tag_expression.eval("@#{sym.to_s}")      
+      return (@tag_expression.nil? || @tag_expression.empty?) ? false : @tag_expression.eval("@#{sym.to_s}")      
     end
   end
+end
+
+class Gherkin::TagExpression
+    def tags
+        @ands.flatten
+    end
 end
 
 # This one automatically sets the tags
