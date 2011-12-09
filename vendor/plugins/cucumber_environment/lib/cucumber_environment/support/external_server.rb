@@ -38,13 +38,20 @@ module Webrat
           # Don't start server if this parameter is given
           return if ENV["NO_EXTERNAL_SERVER"] == "true"
           
-          
           # start the server
-          pid = fork do            
-            exec(external_command) 
+          pid = fork do        
+            exec(external_command)
           end
-          File.open(PID_FILE, "w"){|file| file.puts pid } unless pid.nil?
           
+          sleep(1)
+                    
+          fork do        
+            exec "echo"
+          end
+          
+
+          File.open(PID_FILE, "w"){|file| file.puts pid} unless pid.nil?
+          # create a new process id to ensure that only our own processes are killed
           @started = true
           
           # wait until connection is available
@@ -63,45 +70,42 @@ module Webrat
           end
         end
         
-        # stops the server
-        def stop
-          if File.exist? PID_FILE
-            pid = nil
-            File.open(PID_FILE, "r"){|file| pid = file.gets.strip.to_i}
-  
-
-            unless pid.nil?
-              begin
+      # stops the server
+      def stop      
+        if File.exist? PID_FILE
+          pid = nil
+          File.open(PID_FILE, "r"){|file| pid = file.gets.strip.to_i}   
+          unless pid.nil?
+            [pid, pid+1].each do |p|
+             begin
                 # check if process id exists, throws an exception if not exists
-                Process::getpgid(pid)
-                
-                silence_stream(STDOUT) do            
-                  Process.kill('KILL', pid)
-                  Process.waitpid(pid)
+                Process::getpgid(p)
+                silence_stream(STDOUT) do           
+                  Process.kill('KILL', p)     
+                  Process.waitpid(p)
                 end
-              rescue Errno::ESRCH
+              rescue Exception
               end
-              @started = false
-            end            
-            File.delete(PID_FILE)
-            
+            end # pids
           end
-        end
-        
+          @started = false
+          File.delete(PID_FILE)
+        end           
+      end
+
         # fails
         def fail          
           puts "\n\n==> Failed to boot the external application server... exiting!\n\n"
           exit
         end
         
-        protected                   
+        protected                  
         
-        # generates the start command        
-        def start_command          
+        # generates the start command       
+        def start_command         
           nil
-        end        
+        end       
       end
     end
   end
 end
-
