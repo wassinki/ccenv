@@ -19,12 +19,13 @@ Gem::Specification.new do |s|
   #s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }  = `git ls-
   s.require_paths = ["lib"]
 
-  s.add_dependency("cucumber", "=0.9.4")
-  s.add_dependency("cucumber-rails", "=0.3.2") 
+  s.add_dependency("cucumber", "=1.1.4")
+  s.add_dependency("cucumber-rails", "=1.2.1") 
   s.add_dependency("webrat", "=0.7.3")
   s.add_dependency("zip", "=2.0.2")
   s.add_dependency("ruby-breakpoint", "0.5.1") 
-  s.add_dependency("mechanize", "=1.0.0")
-  s.add_dependency("selenium", "=0.1.0")
+  s.add_dependency("mechanize", "=2.1")
+  s.add_dependency("selenium", "=0.2.5")
   s.add_dependency("selenium-client", "=1.2.18")
+  s.add_dependency("selenium-rc", "=2.4.0")
 end

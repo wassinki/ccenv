@@ -13,8 +13,8 @@ require 'cucumber/formatter/pretty'
 require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
 require 'cucumber/formatter/pretty' 
 require 'cucumber/rails/world'
-require 'cucumber/rails/active_record'
-require 'cucumber/web/tableish'
+#require 'cucumber/rails/active_record'
+#require 'cucumber/web/tableish'
 
 # ActionController::Base.session_options[:session_http_only] = false
 

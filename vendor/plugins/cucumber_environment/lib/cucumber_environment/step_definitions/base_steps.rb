@@ -53,6 +53,12 @@ When /^I select "([^\"]*)" (?:from|for) "([^\"]*)"$/ do |value, field|
   select(value, :with => select_with_name(field))
 end
 
+When /^I select value "([^\"]*)" (?:from|for) "([^\"]*)"$/ do |value, field|
+  select("value=#{value}", :with => select_with_name(field))
+end
+
+ 
+
 Then /^the field "([^\"]*)" should\s+(not )?\s*have option(?:s)? "([^\"]*)"$/ do |field, not_have, options|
   s = select_with_name(field)
   s["xpath="] = ""
