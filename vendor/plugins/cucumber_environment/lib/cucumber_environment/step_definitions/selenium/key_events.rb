@@ -1,5 +1,5 @@
 When /^(?:I )type "(.*)" in "(.*)"$/ do |value, field|
-  selector = "//p[./label[starts-with(text(), '#{field}')]]//input[@type='text' or @type='password' or @type='file']"
+  selector = "//p[./label[starts-with(text(), \"#{field}\")]]//input[@type='text' or @type='password' or @type='file']"
   selenium.type(selector, "")
   value.chars.each_with_index do |char, index|    
     selenium.key_down(selector, char)

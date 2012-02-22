@@ -45,12 +45,12 @@ AfterConfiguration do |config|
         def input_field_with_name(field_name, type=nil)
           types = type.nil? ? %w(text password file checkbox radio) : type.to_a
           type_selector = types.map{|f| "@type='#{f}'"}.join(" or ")
-          field_by_xpath("//p[./label[starts-with(text(), '#{field_name}')]]//input[#{type_selector}]" )
+          field_by_xpath("//p[./label[starts-with(text(), \"#{field_name}\")]]//input[#{type_selector}]" )
         end
 
         # tries to find the select with the given name
         def select_with_name(field_name)
-          field_by_xpath("//p[./label[starts-with(text(), '#{field_name}')]]//select" )
+          field_by_xpath("//p[./label[starts-with(text(), \"#{field_name}\")]]//select" )
         end
         
         def select(value, options)
@@ -88,7 +88,7 @@ AfterConfiguration do |config|
             #original_click_link(link_text_or_regexp, options)
 
             # try to find element with text          
-            selenium.click("xpath=//a[descendant-or-self::*[normalize-space(text())='#{link_text_or_regexp}'] ]") 
+            selenium.click("xpath=//a[descendant-or-self::*[normalize-space(text())=\"#{link_text_or_regexp}\"] ]") 
                       
             # only wait if message is not a confirmation
             wait_for_load(options.merge(:link => link_text_or_regexp)) unless selenium.confirmation?                    
