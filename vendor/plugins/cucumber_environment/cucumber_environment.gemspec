@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency("webrat", "=0.7.3")
   s.add_dependency("zip", "=2.0.2")
   s.add_dependency("ruby-breakpoint", "0.5.1") 
-  s.add_dependency("mechanize", "=2.1")
+  s.add_dependency("mechanize", "=2.0.1")
   s.add_dependency("selenium", "=0.2.5")
   s.add_dependency("selenium-client", "=1.2.18")
   s.add_dependency("selenium-rc", "=2.4.0")

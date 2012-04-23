@@ -13,7 +13,7 @@ module Webrat
       # use server at ccenv directory
       class << self
         def jar_path        
-          directory = File.expand_path(File.join(__FILE__, "../../../../vendor/selenium_server/*"))
+          directory = File.expand_path(File.join(__FILE__, "../../../../vendor/selenium_server/*.jar"))
           files = Dir[directory]
           if files.size == 0
             server = old_jar_path

@@ -6,7 +6,11 @@ require 'webrat'
 require 'webrat/core/session'
 
 class Mechanize
-  alias original_fetch_page fetch_page
+  if Mechanize.instance_methods.include? "fetch_page"
+    alias original_fetch_page fetch_page
+  else
+    alias original_fetch_page get
+  end
   
   def fetch_page(params)
     url = URI.parse(params[:uri])    
