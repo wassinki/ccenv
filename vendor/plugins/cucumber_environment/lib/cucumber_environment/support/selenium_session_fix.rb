@@ -35,22 +35,21 @@ AfterConfiguration do |config|
           v
         end
         
-        # search for input with field name
         def field_with_name(field_name)
           result = input_field_with_name(field_name) || select_with_name(field_name)
         end
-
+        
         # tries to find the field with given name, using the type selector
         # if no type is given, all input fields are looked for
         def input_field_with_name(field_name, type=nil)
-          types = type.nil? ? %w(text password file checkbox radio) : type.to_a
+          types = type.nil? ? %w(text password file checkbox radio hidden) : type.to_a
           type_selector = types.map{|f| "@type='#{f}'"}.join(" or ")
-          field_by_xpath("//p[./label[starts-with(text(), \"#{field_name}\")]]//input[#{type_selector}]" )
+          field_by_xpath("//p[.//label[starts-with(text(), \"#{field_name}\")] and  not(contains(@style,'display: none'))]//input[#{type_selector}]" ) || field_by_xpath("//input[@id=\"#{field_name}\" and (#{type_selector})]" )
         end
-
+        
         # tries to find the select with the given name
         def select_with_name(field_name)
-          field_by_xpath("//p[./label[starts-with(text(), \"#{field_name}\")]]//select" )
+          field_by_xpath("//p[.//label[starts-with(text(), \"#{field_name}\")]]//select" )  || field_by_xpath("//select[@id=\"#{field_name}\"]" )
         end
         
         def select(value, options)
@@ -88,7 +87,7 @@ AfterConfiguration do |config|
             #original_click_link(link_text_or_regexp, options)
 
             # try to find element with text          
-            selenium.click("xpath=//a[descendant-or-self::*[normalize-space(text())=\"#{link_text_or_regexp}\"] ]") 
+            selenium.click("xpath=//a[descendant-or-self::*[normalize-space(text())=\"#{link_text_or_regexp}\"] or @id=\"#{link_text_or_regexp}\"]") 
                       
             # only wait if message is not a confirmation
             wait_for_load(options.merge(:link => link_text_or_regexp)) unless selenium.confirmation?                    

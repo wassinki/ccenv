@@ -1,7 +1,7 @@
 # Commonly used webrat steps
 # http://github.com/brynary/webrat
 
-Given /^I am on (.+)$/ do |page_name|  
+Given /^I am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
@@ -14,11 +14,19 @@ When /^I press "([^\"]*)"$/ do |button|
 end
 
 When /^I follow "([^\"]*)"$/ do |link|
-  click_link(link)  
+  click_link(link)
 end
 
 When /^I follow "([^\"]*)" within "([^\"]*)"$/ do |link, parent|
   click_link_within(parent, link)
+end
+
+When /^I follow the link to "([^\"]*)"$/ do |link_name|
+  click_link_by_href(link_name)
+end
+
+When /^I follow the link "([^\"]*)" with classname "([^\"]*)"$/ do |link_text, classname|
+  click_link_by_class_and_text(classname, link_text)
 end
 
 When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
@@ -28,9 +36,6 @@ end
 When /^I fill in "([^\"]*)" for "([^\"]*)"$/ do |value, field|
   fill_in(input_field_with_name(field), :with => value)
 end
-
-
-
 
 # Use this to fill in an entire form with data from a table. Example:
 #
@@ -57,17 +62,15 @@ When /^I select value "([^\"]*)" (?:from|for) "([^\"]*)"$/ do |value, field|
   select("value=#{value}", :with => select_with_name(field))
 end
 
- 
-
 Then /^the field "([^\"]*)" should\s+(not )?\s*have option(?:s)? "([^\"]*)"$/ do |field, not_have, options|
   s = select_with_name(field)
   s["xpath="] = ""
 
   options.split(/,\s*/).each do |o|
     if not_have.nil?
-      assert !field_by_xpath("#{s}/option[text() = \"#{o}\"]").nil?    
+      assert !field_by_xpath("#{s}/option[text() = \"#{o}\"]").nil?
     else
-      assert field_by_xpath("#{s}/option[text() = \"#{o}\"]").nil?    
+      assert field_by_xpath("#{s}/option[text() = \"#{o}\"]").nil?
     end
 
   end
@@ -120,12 +123,16 @@ When /^I select "([^\"]*)" as the "([^\"]*)" date$/ do |date, date_label|
   select_date(date, :from => date_label)
 end
 
-When /^I check "([^\"]*)"$/ do |field|
-  check(input_field_with_name(field))
+When /^I (check|uncheck) "([^\"]*)"$/ do |check_uncheck, field|
+  if check_uncheck == "check"
+    check(input_field_with_name(field))
+  else
+    uncheck(input_field_with_name(field))
+  end
 end
 
-When /^I uncheck "([^\"]*)"$/ do |field|
-  uncheck(input_field_with_name(field))
+When /^I select the radiobutton "([^\"]*)"$/ do |field|
+  check(field_by_xpath("//label[descendant-or-self::*[text() =\"#{field}\"]]//input"))
 end
 
 When /^I choose "([^\"]*)"$/ do |field|
@@ -136,20 +143,20 @@ When /^I attach the file at "([^\"]*)" to "([^\"]*)"$/ do |path, field|
   attach_file(field, path)
 end
 
-Then /^I should\s+(not )?\s*see the link "([^\"]*)"$/ do |negate, text|  
+Then /^I should\s+(not )?\s*see the link "([^\"]*)"$/ do |negate, text|
   if negate.nil?
     assert_false field_by_xpath("//a[text()=\"#{text}\"]").nil?
   else
-    assert field_by_xpath("//a[text()=\"#{text}\"]").nil? 
+    assert field_by_xpath("//a[text()=\"#{text}\"]").nil?
   end
 end
 
-Then /^I should\s+(not )?\s*see "([^\"]*)"$/ do |negate, text|  
+Then /^I should\s+(not )?\s*see "([^\"]*)"$/ do |negate, text|
   if negate.nil?
     assert_contain text
   else
     assert_not_contain text
-  end    
+  end
 end
 
 Then /^I should\s+(not )?\s*see "([^\"]*)" within "([^\"]*)"$/ do |negate, text, selector|
@@ -184,14 +191,14 @@ end
 
 Then /^I should\s+(not )?\s*see (field|select|textfield|passwordfield|checkbox|radiobutton) "([^\"]*)"$/ do |negate, type, name|
   field = case type
-    when "field"
-      field_with_name(name)
-    when "select"
-      select_with_name(name)
-    else
-      input_field_with_name(name, type)
-   end
-  
+  when "field"
+    field_with_name(name)
+  when "select"
+    select_with_name(name)
+  else
+    input_field_with_name(name, type)
+  end
+
   unless negate
     assert_not_nil field
   else
@@ -203,31 +210,58 @@ Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|
   assert_match(/#{value}/, field_labeled(field).value)
 end
 
+Then /^the span "([^\"]*)" should( not)? contain "([^\"]*)"$/ do |field, negate, value|
+  unless negate
+    assert !field_by_xpath("//span[@id=\"#{field}\"][text()=\"#{value}\"]").nil?
+  else
+    assert field_by_xpath("//span[@id=\"#{field}\"][text()=\"#{value}\"]").nil?
+  end
+end
+
+Then /^the numeric field "([^\"]*)" should contain "([^\"]*)"$/ do |field, value|
+  assert_match(/#{value.strip}/,  field_labeled(field).value)
+end
+
 Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
   assert_no_match(/#{value}/, field_labeled(field).value)
 end
 
-Then /^the "([^\"]*)" (?:checkbox|radio button) should be (checked|unchecked)$/ do |field, checked_unchecked|
-  if checked_unchecked == "checked"
-    assert field_labeled(field).checked?
+Then /^the "([^\"]*)" (?:checkbox|radio button) should be (checked|check|unchecked|uncheck)$/ do |field, checked_unchecked|
+  if checked_unchecked == "checked" || checked_unchecked == "check"
+    assert_match("on", selenium.get_value(input_field_with_name(field)))
   else
-    assert !field_labeled(field).checked?
+    assert_match("off", selenium.get_value(input_field_with_name(field)))
   end
 end
 
-
 Then /^the "([^\"]*)" (checkbox|radio button) should not be (checked|unchecked)$/ do |field, field_type , checked_unchecked|
   checked_unchecked = (checked_unchecked == "checked") ? "unchecked" : "checked"
-  Then %(the "#{field}" #{field_type} should be #{checked_unchecked})
+  step %(the "#{field}" #{field_type} should be #{checked_unchecked})
 end
 
-
+Then /^the select "([^\"]*)" should have selected "([^\"]*)"$/ do |field, value|
+  s = select_with_name(field)
+  s["xpath="] = ""
+  assert_match(/#{value}/, selenium.get_text(field_by_xpath("#{s}/option[@selected=\"true\"]")))
+end
 
 Then /^the "([^\"]*)" field should be (enabled|disabled)$/ do |field,enabled_disabled|
   if enabled_disabled == "enabled"
-    !assert field_labeled(field).disabled?
+    result = field_by_xpath("//input[@id=\"#{field}\" and (@disabled=\"disabled\")]").nil? || !field_labeled(field).disabled?
+    assert result
   else
-    assert field_labeled(field).disabled?  
+    result = !field_by_xpath("//input[@id=\"#{field}\" and (@disabled=\"disabled\")]").nil? || field_labeled(field).disabled?
+    assert result
+  end
+end
+
+Then /^the link "([^\"]*)" should( not)? have the class "([^\"]*)"$/ do |field, negate, classname|
+  unless negate
+    result = !field_by_xpath("//a[@id=\"#{field}\" and (@class=\"#{classname}\")]").nil? || !field_by_xpath("//a[descendant-or-self::*[text()='#{field}'] and (@class=\"#{classname}\")]").nil?
+    assert result
+  else
+    result = field_by_xpath("//a[@id=\"#{field}\" and (@class=\"#{classname}\")]").nil? || field_by_xpath("//a[descendant-or-self::*[text()='#{field}'] and (@class=\"#{classname}\")]").nil?
+    assert result
   end
 end
 
@@ -236,8 +270,7 @@ Then /^the "([^\"]*)" field should not be (enabled|disabled)$/ do |field,enabled
   Then %(the "#{field}" field should be #{enabled_disabled})
 end
 
-
-Then /^I should( not)? be on (.+)$/ do |negate, page_name|  
+Then /^I should( not)? be on (.+)$/ do |negate, page_name|
   unless negate
     assert_equal URI.parse(path_to(page_name)).path, URI.parse(current_url).path
   else
@@ -248,21 +281,3 @@ end
 Then /^show me the page$/ do
   save_and_open_page
 end
-
-def field_with_name(field_name)
-  result = input_field_with_name(field_name) || select_with_name(field_name)
-end
-
-# tries to find the field with given name, using the type selector
-# if no type is given, all input fields are looked for
-def input_field_with_name(field_name, type=nil)
-  types = type.nil? ? %w(text password file checkbox radio) : type.to_a
-  type_selector = types.map{|f| "@type='#{f}'"}.join(" or ")
-  field_by_xpath("//p[.//label[starts-with(text(), \"#{field_name}\")]]//input[#{type_selector}]" ) || field_by_xpath("//input[@id=\"#{field_name}\" and (#{type_selector})]" )
-end
-
-# tries to find the select with the given name
-def select_with_name(field_name)
-  field_by_xpath("//p[.//label[starts-with(text(), \"#{field_name}\")]]//select" )  || field_by_xpath("//select[@id=\"#{field_name}\"]" )
-end
-

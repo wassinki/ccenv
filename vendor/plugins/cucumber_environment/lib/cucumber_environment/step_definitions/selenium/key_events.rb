@@ -1,16 +1,9 @@
 When /^(?:I )type "(.*)" in "(.*)"$/ do |value, field|
   selector = "//p[./label[starts-with(text(), \"#{field}\")]]//input[@type='text' or @type='password' or @type='file']"
   selenium.type(selector, "")
-  value.chars.each_with_index do |char, index|    
-    selenium.key_down(selector, char)
-    unless char == "."
-      selenium.key_press(selector, char)
-    else
-      # a bug in selenium
-      selenium.type(selector, value[0..index])
-    end  
-    selenium.key_up(selector, char)    
-  end
+  selenium.type(selector, value)
+  selenium.key_down(selector, value[value.length-1].chr)
+  selenium.key_up(selector, value[value.length-1].chr)
 end
 
 When /^I type in the following:$/ do |fields|

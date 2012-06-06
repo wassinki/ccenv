@@ -30,12 +30,16 @@ Then /^(?:I )see the confirm dialog( with text "([^\"]*)"?)?$/ do |with_text, te
 end
 
 
-Then /^(?:I )should (not )?\s*see an alert dialog(?: with text "([^\"]*)")?$/ do |negate, text|
-  selenium.alert
-  #unless negate    
-  #  assert_equal(text, selenium.alert) unless text.blank?    
-  #else
-  #  assert_false(selenium.alert?)
-  #end
+Then /^(?:I )should (not )?\s*see an alert dialog?$/ do |negate|
+  unless negate    
+    assert_false(selenium.alert?)
+  else
+    assert(selenium.alert?)
+  end
+end
+
+Then /^(?:I )should see an alert dialog with text "([^\"]*)"$/ do |text|
+  alert_message = selenium.get_alert() 
+  assert_equal(text, alert_message)
 end
 

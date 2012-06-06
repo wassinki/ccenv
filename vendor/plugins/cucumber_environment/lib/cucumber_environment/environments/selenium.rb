@@ -12,10 +12,10 @@ Webrat.configure do |config|
   config.open_error_files = true # Set to true if you want error pages to pop up in the browser
   # Selenium defaults to using the selenium environment. Use the following to override this.
     
-  selenium_browser_key = ENV['selenium.browser_key'] || "*firefox"
-  selenium_browser_startup_timeout = 3000
-  selenium_server_address = ENV['selenium.server_address'] || "http://localhost"
-  selenium_server_port = ENV['selenium.server_port'] || 4444
+  config.selenium_browser_key = ENV['SELENIUM_BROWSER_KEY'] || "*firefox"
+  config.selenium_browser_startup_timeout = 3000
+  config.selenium_server_address = ENV['SELENIUM_SERVER_ADDRESS'] || nil
+  config.selenium_server_port = (ENV['SELENIUM_SERVER_PORT'] || 4444.to_s).to_i
 end
 
 # Selenium server
